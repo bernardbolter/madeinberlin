@@ -12,29 +12,23 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2.3.1
 
-      - name: Install Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-
-      - name: Install Project Dependencies
-        run: npm ci
-
+      - name: install dependencies
+        run: yarn install
+      
       - name: Install Gatsby CLI
         run: npm install -g gatsby-cli@2.12.34
       
       - name: Build
         run: gatsby build
-
-      - name: Verify build 
+      
+      - name: Verify build
         run: ls -la public
 
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.ssh_private_key }}" > ~/.ssh/deploy_key
-          sudo chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "${{ secrets.host }}" > ~/.ssh/known_hosts
-
-      - name: SFTP upload
-        run: sftp -i ~/.ssh/deply_key ${{ secrets.deploy_user }}@${{ secrets.host }} <<< $'cd ${{ secrets.destination_path }} \n put -r public/*'
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.2.0
+        with:
+          server: access897652677.webspace-data.io
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          server-dir: /staging.acolorfulhistory.com/
+          local-dir: ./public/
