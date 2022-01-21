@@ -1,12 +1,12 @@
 module.exports = {
   siteMetadata: {
       title: `Made in Berlin`,
-    siteUrl: `https://www.yourdomain.tld`
+    siteUrl: `https://www.madeinberlin.net`
   },
   plugins: [{
     resolve: 'gatsby-source-wordpress',
     options: {
-      "url": ""
+      "url": "https://berlin.madeinberlin.net/graphql"
     }
   }, "gatsby-plugin-sass", "gatsby-plugin-image", "gatsby-plugin-react-helmet", "gatsby-plugin-sitemap", {
     resolve: 'gatsby-plugin-manifest',
